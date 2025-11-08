@@ -1,4 +1,6 @@
 from __future__ import annotations
+from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils import timezone
 
@@ -67,6 +69,13 @@ class Trainer(models.Model):
     first_name = models.CharField("Nombre", max_length=80)
     last_name = models.CharField("Apellido", max_length=80)
     email = models.EmailField("Email")
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name="Usuario",
+    )
 
     def __str__(self) -> str:
         return f"{self.last_name}, {self.first_name}"
@@ -120,6 +129,11 @@ class Payment(models.Model):
         RECHAZADO = "RECHAZADO", "Rechazado"
 
     member = models.ForeignKey(Member, on_delete=models.CASCADE)
+    membership_type = models.ForeignKey(
+        MembershipType,
+        on_delete=models.PROTECT,
+        verbose_name="Tipo de membresía",
+    )
     date = models.DateField("Fecha", default=timezone.localdate)
     amount = models.DecimalField("Monto", max_digits=12, decimal_places=2)
     method = models.CharField("Método", max_length=16, choices=Method.choices)
@@ -128,3 +142,27 @@ class Payment(models.Model):
 
     def __str__(self) -> str:
         return f"{self.member} — ${self.amount} ({self.status})"
+
+    def save(self, *args, **kwargs) -> None:
+        if not self.membership_type_id:
+            raise ValidationError("El pago debe tener un tipo de membresía asociado.")
+
+        if not self.amount:
+            self.amount = self.membership_type.price
+
+        previous_status = None
+        if self.pk:
+            previous_status = Payment.objects.get(pk=self.pk).status
+
+        super().save(*args, **kwargs)
+
+        if (
+            self.status == self.Status.APROBADO
+            and previous_status != self.Status.APROBADO
+        ):
+            self._activar_membresia()
+
+    def _activar_membresia(self) -> None:
+        from . import services
+
+        services.aplicar_pago(self)

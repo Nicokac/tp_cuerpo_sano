@@ -21,7 +21,7 @@ class ActivityAdmin(admin.ModelAdmin):
 
 @admin.register(models.Trainer)
 class TrainerAdmin(admin.ModelAdmin):
-    list_display = ("last_name", "first_name", "email")
+    list_display = ("last_name", "first_name", "email", "user")
 
 @admin.register(models.ClassSession)
 class ClassSessionAdmin(admin.ModelAdmin):
@@ -34,5 +34,12 @@ class AttendanceAdmin(admin.ModelAdmin):
 
 @admin.register(models.Payment)
 class PaymentAdmin(admin.ModelAdmin):
-    list_display = ("member", "date", "amount", "method", "status")
-    list_filter = ("method", "status")
+    list_display = (
+        "member",
+        "membership_type",
+        "date",
+        "amount",
+        "method",
+        "status",
+    )
+    list_filter = ("method", "status", "membership_type")
