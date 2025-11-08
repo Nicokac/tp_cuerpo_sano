@@ -1,0 +1,31 @@
+{% extends "gym/base.html" %}
+{% block title %}Asistencias — Cuerpo Sano{% endblock %}
+{% block content %}
+  <h2>Asistencias</h2>
+  <p>
+    <a class="btn" href="{% url 'gym:attendance_gym' %}">Registrar asistencia GYM</a>
+    <a class="btn" href="{% url 'gym:attendance_class' %}">Registrar asistencia a clase</a>
+  </p>
+  <table>
+    <thead>
+      <tr>
+        <th>Fecha</th>
+        <th>Miembro</th>
+        <th>Tipo</th>
+        <th>Clase</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for attendance in attendances %}
+        <tr>
+          <td>{{ attendance.timestamp|date:"d/m/Y H:i" }}</td>
+          <td>{{ attendance.member }}</td>
+          <td>{{ attendance.get_scope_display }}</td>
+          <td>{% if attendance.class_session %}{{ attendance.class_session }}{% else %}-{% endif %}</td>
+        </tr>
+      {% empty %}
+        <tr><td colspan="4">No hay asistencias registradas.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

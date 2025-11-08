@@ -1,0 +1,16 @@
+{% extends "gym/base.html" %}
+{% block title %}Clase — Cuerpo Sano{% endblock %}
+{% block content %}
+  <h2>{% if object %}Editar{% else %}Nueva{% endif %} clase</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    {% for field in form %}
+      <label>{{ field.label }}{{ field }}
+        {% for error in field.errors %}<span style="color:#b71c1c;">{{ error }}</span>{% endfor %}
+      </label>
+    {% endfor %}
+    <button type="submit" class="btn">Guardar</button>
+    <a class="btn btn-secondary" href="{% url 'gym:classsession_list' %}">Cancelar</a>
+  </form>
+{% endblock %}

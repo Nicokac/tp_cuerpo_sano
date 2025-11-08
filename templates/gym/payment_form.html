@@ -1,0 +1,17 @@
+{% extends "gym/base.html" %}
+{% block title %}Registrar pago — Cuerpo Sano{% endblock %}
+{% block content %}
+  <h2>Registrar pago</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    {% for field in form %}
+      <label>{{ field.label }}{{ field }}
+        {% if field.help_text %}<small>{{ field.help_text }}</small>{% endif %}
+        {% for error in field.errors %}<span style="color:#b71c1c;">{{ error }}</span>{% endfor %}
+      </label>
+    {% endfor %}
+    <button type="submit" class="btn">Guardar</button>
+    <a class="btn btn-secondary" href="{% url 'gym:payment_list' %}">Cancelar</a>
+  </form>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends "gym/base.html" %}
+{% block title %}Eliminar clase — Cuerpo Sano{% endblock %}
+{% block content %}
+  <h2>Eliminar clase</h2>
+  <p>¿Confirmás que querés eliminar la clase <strong>{{ object }}</strong>?</p>
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Eliminar</button>
+    <a class="btn btn-secondary" href="{% url 'gym:classsession_list' %}">Cancelar</a>
+  </form>
+{% endblock %}

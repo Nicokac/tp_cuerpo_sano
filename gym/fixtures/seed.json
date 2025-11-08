@@ -1,0 +1,90 @@
+[
+  {
+    "model": "gym.membershiptype",
+    "pk": 1,
+    "fields": {
+      "name": "Mensual 30d",
+      "duration_days": 30,
+      "price": "12000.00",
+      "allows_classes": true,
+      "max_classes_per_week": null
+    }
+  },
+  {
+    "model": "gym.membershiptype",
+    "pk": 2,
+    "fields": {
+      "name": "Trimestral 90d",
+      "duration_days": 90,
+      "price": "32000.00",
+      "allows_classes": true,
+      "max_classes_per_week": null
+    }
+  },
+  {
+    "model": "gym.activity",
+    "pk": 1,
+    "fields": {
+      "name": "Funcional",
+      "description": "Entrenamiento funcional básico"
+    }
+  },
+  {
+    "model": "gym.trainer",
+    "pk": 1,
+    "fields": {
+      "first_name": "Laura",
+      "last_name": "Pérez",
+      "email": "lperez@example.com",
+      "user": null
+    }
+  },
+  {
+    "model": "gym.member",
+    "pk": 1,
+    "fields": {
+      "first_name": "Juan",
+      "last_name": "García",
+      "email": "juan@example.com",
+      "dni": "30111222",
+      "phone": "+54 9 11 5555-1111",
+      "date_joined": "2024-01-10",
+      "is_active": true
+    }
+  },
+  {
+    "model": "gym.member",
+    "pk": 2,
+    "fields": {
+      "first_name": "María",
+      "last_name": "Rodríguez",
+      "email": "maria@example.com",
+      "dni": "29888999",
+      "phone": "+54 9 11 5555-2222",
+      "date_joined": "2024-02-15",
+      "is_active": true
+    }
+  },
+  {
+    "model": "gym.classsession",
+    "pk": 1,
+    "fields": {
+      "activity": 1,
+      "trainer": 1,
+      "start": "2030-01-10T12:00:00Z",
+      "end": "2030-01-10T13:00:00Z",
+      "capacity": 4
+    }
+  },
+  {
+    "model": "gym.classsession",
+    "pk": 2,
+    "fields": {
+      "activity": 1,
+      "trainer": 1,
+      "start": "2030-01-12T18:30:00Z",
+      "end": "2030-01-12T19:30:00Z",
+      "capacity": 3
+    }
+  }
+]

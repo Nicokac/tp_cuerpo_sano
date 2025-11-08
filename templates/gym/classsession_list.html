@@ -1,0 +1,37 @@
+{% extends "gym/base.html" %}
+{% block title %}Clases — Cuerpo Sano{% endblock %}
+{% block content %}
+  <h2>Clases</h2>
+  <p><a class="btn" href="{% url 'gym:classsession_create' %}">Nueva clase</a></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Actividad</th>
+        <th>Entrenador</th>
+        <th>Inicio</th>
+        <th>Fin</th>
+        <th>Cupo</th>
+        <th>Ocupados</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for session in class_sessions %}
+        <tr>
+          <td>{{ session.activity.name }}</td>
+          <td>{{ session.trainer }}</td>
+          <td>{{ session.start|date:"d/m/Y H:i" }}</td>
+          <td>{{ session.end|date:"d/m/Y H:i" }}</td>
+          <td>{{ session.capacity }}</td>
+          <td>{{ session.seats_taken }}</td>
+          <td>
+            <a class="btn btn-secondary" href="{% url 'gym:classsession_update' session.pk %}">Editar</a>
+            <a class="btn btn-danger" href="{% url 'gym:classsession_delete' session.pk %}">Eliminar</a>
+          </td>
+        </tr>
+      {% empty %}
+        <tr><td colspan="7">No hay clases cargadas.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
