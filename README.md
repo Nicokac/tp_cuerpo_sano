@@ -14,3 +14,8 @@ pip install -r requirements.txt
 python manage.py migrate
 python manage.py createsuperuser
 python manage.py runserver
+```
+
+También podés crear usuarios de prueba ingresando a `/accounts/register/`.
+El alta es básica y está pensada para la demo académica del TP.
+Usala para generar cuentas ficticias de empleados sin afectar datos reales.

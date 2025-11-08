@@ -18,7 +18,7 @@ from django.views.generic import (
 )
 
 from . import services
-from .forms import ClassAttendanceForm, GymAttendanceForm, PaymentForm
+from .forms import ClassAttendanceForm, GymAttendanceForm, PaymentForm, SignupForm
 from .models import Attendance, ClassSession, Member, Payment, Trainer
 
 
@@ -166,6 +166,20 @@ class ClassAttendanceView(LoginRequiredMixin, PermissionRequiredMixin, FormView)
             form.add_error(None, exc.message)
             return self.form_invalid(form)
         messages.success(self.request, "Asistencia a la clase registrada correctamente.")
+        return super().form_valid(form)
+
+
+class SignUpView(FormView):
+    template_name = "registration/register.html"
+    form_class = SignupForm
+    success_url = reverse_lazy("login")
+
+    def form_valid(self, form):
+        form.save()
+        messages.success(
+            self.request,
+            "Tu cuenta se creó correctamente. Iniciá sesión para continuar.",
+        )
         return super().form_valid(form)
 
 

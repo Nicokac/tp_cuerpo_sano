@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>Registrarse — Cuerpo Sano</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 2rem; }
+      form { max-width: 420px; margin: auto; display: grid; gap: .75rem; }
+      label { display: grid; gap: .35rem; }
+      input, button { padding: .6rem .8rem; }
+      .errorlist { color: #c00; margin: 0; padding-left: 1rem; }
+    </style>
+  </head>
+  <body>
+    <h1>Crear cuenta</h1>
+    <p>Completá tus datos para generar un usuario de demo.</p>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+      <label>Nombre {{ form.first_name }} {{ form.first_name.errors }}</label>
+      <label>Apellido {{ form.last_name }} {{ form.last_name.errors }}</label>
+      <label>Email {{ form.email }} {{ form.email.errors }}</label>
+      <label>Contraseña {{ form.password1 }} {{ form.password1.errors }}</label>
+      <label>Confirmación {{ form.password2 }} {{ form.password2.errors }}</label>
+      <button type="submit">Registrarme</button>
+    </form>
+    <p>¿Ya tenés usuario? <a href="{% url 'login' %}">Iniciá sesión</a>.</p>
+  </body>
+</html>

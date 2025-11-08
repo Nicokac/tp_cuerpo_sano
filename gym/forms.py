@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 from django import forms
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 from django.utils import timezone
 
 from .models import ClassSession, Member, Payment
@@ -60,3 +62,36 @@ class PaymentForm(forms.ModelForm):
         if membership_type and amount in (None, ""):
             cleaned_data["amount"] = membership_type.price
         return cleaned_data
+
+
+class SignupForm(UserCreationForm):
+    first_name = forms.CharField(label="Nombre", max_length=150)
+    last_name = forms.CharField(label="Apellido", max_length=150)
+    email = forms.EmailField(label="Email")
+
+    class Meta:
+        model = User
+        fields = [
+            "first_name",
+            "last_name",
+            "email",
+            "password1",
+            "password2",
+        ]
+
+    def clean_email(self):
+        email = self.cleaned_data.get("email", "").strip()
+        if User.objects.filter(email__iexact=email).exists():
+            raise forms.ValidationError("Ya existe un usuario con ese email.")
+        return email
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        email = self.cleaned_data["email"]
+        user.username = email
+        user.email = email
+        user.first_name = self.cleaned_data["first_name"]
+        user.last_name = self.cleaned_data["last_name"]
+        if commit:
+            user.save()
+        return user
